@@ -4,7 +4,7 @@ import com.test.lsy.realtimerank.service.RankService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Set;
+import java.util.List;
 
 @RestController
 @RequestMapping("/rank")
@@ -27,7 +27,7 @@ public class RankController {
 
     // 상위 랭킹 조회 API
     @GetMapping("/top")
-    public Set<String> getTopPlayers(@RequestParam(defaultValue = "10") int limit) {
+    public List<String> getTopPlayers(@RequestParam(defaultValue = "10") int limit) {
         return service.getTopPlayers(limit);
     }
 

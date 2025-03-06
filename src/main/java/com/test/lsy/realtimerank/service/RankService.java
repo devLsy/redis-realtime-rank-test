@@ -6,6 +6,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -30,13 +31,13 @@ public class RankService {
     }
 
     // 상위 랭킹 조회 (ZREVRANGE WITHSCORES)
-    public Set<String> getTopPlayers(int limit) {
-        Set<ZSetOperations.TypedTuple<String>> result =
+    public List<String> getTopPlayers(int limit) {
+        Set<ZSetOperations.TypedTuple<String>> orgResult =
                 redisTemplate.opsForZSet().reverseRangeWithScores(leaderboardKey, 0, limit - 1);
 
-        return result.stream()
+        return orgResult.stream()
                 .map(tuple -> tuple.getValue().replace("rank:", "") + " (Score: " + tuple.getScore() + ")")
-                .collect(Collectors.toSet());
+                .collect(Collectors.toList());
     }
 
     // 특정 플레이어의 순위 조회 (ZRANK)
